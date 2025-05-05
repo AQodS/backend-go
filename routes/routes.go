@@ -14,5 +14,6 @@ func SetupRouter() *gin.Engine {
 	router.GET("/api/users", middlewares.AuthMiddleware(), controllers.FindUsers)
 	router.POST("/api/users", middlewares.AuthMiddleware(), controllers.CreateUser)
 	router.GET("/api/users/:id", middlewares.AuthMiddleware(), controllers.FindUserById)
+	router.PUT("/api/users/:id", middlewares.AuthMiddleware(), controllers.UpdateUser)
 	return router
 }
