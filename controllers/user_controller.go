@@ -14,7 +14,7 @@ func FindUsers(c *gin.Context) {
 	// init slice to store user data
 	var users []models.User
 
-	// select user data from database
+	// select all user data from database
 	database.DB.Find(&users)
 
 	// send success response
@@ -162,5 +162,39 @@ func UpdateUser(c *gin.Context) {
 			CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
 			UpdatedAt: user.UpdatedAt.Format("2006-01-02 15:04:05"),
 		},
+	})
+}
+
+func DeleteUser(c *gin.Context) {
+	// select Id from URL params
+	id := c.Param("id")
+
+	// init user
+	var user models.User
+
+	// find user by Id
+	if err := database.DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, structs.ErrorResponse{
+			Success: false,
+			Message: "User not found",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// delete user from database
+	if err := database.DB.Delete(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, structs.ErrorResponse{
+			Success: false,
+			Message: "Failed to delete user",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// send success response
+	c.JSON(http.StatusOK, structs.SuccessResponse{
+		Success: true,
+		Message: "User deleted successfully",
 	})
 }
