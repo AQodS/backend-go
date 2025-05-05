@@ -3,8 +3,7 @@ package main
 import (
 	"backend-go/config"
 	"backend-go/database"
-
-	"github.com/gin-gonic/gin"
+	"backend-go/routes"
 )
 
 func main() {
@@ -14,16 +13,9 @@ func main() {
 	// Initialize database
 	database.InitDB()
 
-	// Gin initialization
-	router := gin.Default()
-
-	// Create route with GET method
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Server is running",
-		})
-	})
+	// setup router
+	r := routes.SetupRouter()
 
 	// Run the server
-	router.Run(":" + config.GetEnv("APP_PORT", "3000"))
+	r.Run(":" + config.GetEnv("APP_PORT", "3000"))
 }
