@@ -20,7 +20,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		// if token is empty, return 401 Unauthorized
 		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"error": "Unauthorized",
+				"error": "Token is required",
 			})
 			c.Abort() // abort the next request
 			return
