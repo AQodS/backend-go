@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-go/config"
+	"backend-go/database"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,6 +10,9 @@ import (
 func main() {
 	// Load environment variables
 	config.LoadEnv()
+
+	// Initialize database
+	database.InitDB()
 
 	// Gin initialization
 	router := gin.Default()
